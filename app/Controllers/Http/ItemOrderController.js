@@ -1,16 +1,16 @@
 'use strict'
-const Order = use("App/Models/Order")
+const ItemOrder = use("App/Models/ItemOrder")
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
 /**
- * Resourceful controller for interacting with orders
+ * Resourceful controller for interacting with itemorders
  */
-class OrderController {
+class ItemOrderController {
   /**
-   * Show a list of all orders.
-   * GET orders
+   * Show a list of all itemorders.
+   * GET itemorders
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -19,14 +19,15 @@ class OrderController {
    */
   async index () {
 
-    const orders = await Order.all();
+    const itemOrders = await ItemOrder.all()
 
-    return orders;
+    return itemOrders
+
   }
 
   /**
-   * Render a form to be used for creating a new order.
-   * GET orders/create
+   * Render a form to be used for creating a new itemorder.
+   * GET itemorders/create
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -34,44 +35,43 @@ class OrderController {
    * @param {View} ctx.view
    */
 
-
   /**
-   * Create/save a new order.
-   * POST orders
+   * Create/save a new itemorder.
+   * POST itemorders
    *
    * @param {object} ctx
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
   async store ({ request }) {
+    const data = request.only(['order_id', 'product_id']);
 
-    const data = request.only(['status'])
+    const newItemOrder = await ItemOrder.create(data);
 
-    const newOrder = await Order.create(data)
-
-    return newOrder
+    return newItemOrder
   }
 
   /**
-   * Display a single order.
-   * GET orders/:id
+   * Display a single itemorder.
+   * GET itemorders/:id
    *
    * @param {object} ctx
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async show ({ params, request, response, view }) {
+  async show ({ params}) {
 
-      const order = await Order.findOrFail(params.id)
+    const order_id = params.id
 
-      return order
+    const itemOrder = await ItemOrder.query().where({order_id : order_id}).fetch()
 
+    return itemOrder
   }
 
   /**
-   * Render a form to update an existing order.
-   * GET orders/:id/edit
+   * Render a form to update an existing itemorder.
+   * GET itemorders/:id/edit
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -81,8 +81,8 @@ class OrderController {
 
 
   /**
-   * Update order details.
-   * PUT or PATCH orders/:id
+   * Update itemorder details.
+   * PUT or PATCH itemorders/:id
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -92,19 +92,16 @@ class OrderController {
   }
 
   /**
-   * Delete a order with id.
-   * DELETE orders/:id
+   * Delete a itemorder with id.
+   * DELETE itemorders/:id
    *
    * @param {object} ctx
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async destroy ({ params }) {
-    
-    const order = await Order.findOrFail(params.id)
-
-    await order.delete()
+  async destroy ({ params, request, response }) {
+  
   }
 }
 
-module.exports = OrderController
+module.exports = ItemOrderController

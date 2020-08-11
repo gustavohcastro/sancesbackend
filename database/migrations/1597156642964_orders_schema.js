@@ -7,6 +7,7 @@ class OrdersSchema extends Schema {
   up () {
     this.create('orders', (table) => {
       table.increments()
+      table.string('status')
       table.timestamps()
     })
   }

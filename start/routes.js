@@ -24,3 +24,12 @@ Route.get('/app', 'AppController.index').middleware(['auth'])
 Route.group( () => {
     Route.resource('products', 'ProductController').apiOnly()
 }).middleware('auth')
+
+
+Route.group( () => {
+    Route.resource('orders', 'OrderController').apiOnly()
+}).middleware('auth')
+
+Route.group( () => {
+    Route.resource('items-order', 'ItemOrderController').apiOnly()
+}).middleware('auth')
