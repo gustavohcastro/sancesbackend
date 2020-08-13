@@ -89,6 +89,14 @@ class OrderController {
    * @param {Response} ctx.response
    */
   async update ({ params, request, response }) {
+    const {status} = request.only(['status'])
+    const updated = await Order
+      .query()
+      .where('id', params.id)
+      .update({status})
+
+    return updated;
+
   }
 
   /**

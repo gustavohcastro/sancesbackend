@@ -19,9 +19,16 @@ class ItemOrderController {
    */
   async index () {
 
-    const itemOrders = await ItemOrder.all()
+    // const itemOrders = await ItemOrder.all()
 
-    return itemOrders
+    // return itemOrders
+
+    const itemOrders = await ItemOrder
+    .query()
+    .join('products', 'item_orders.product_id', 'products.id')
+    .join('orders', 'item_orders.order_id', 'orders.id')
+    .fetch()
+    return itemOrders;
 
   }
 
